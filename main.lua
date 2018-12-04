@@ -14,7 +14,8 @@ local SCREEN_WEIGHT = love.graphics.getWidth()/2
 local SCREEN_HEIGHT = love.graphics.getHeight()/2
 
 local hero = {}
-
+local obstacles = {}
+local start = love.timer.getTime()
 local camera = {}
 camera.x = 0;
 
@@ -85,6 +86,10 @@ local bgX_Train = 1
 
 local bgY = 1
 
+--------------------------- Images obstacles ---------------------------------------------------
+local tile = love.graphics.newImage("images/Tile.png")
+	local rocket1 = love.graphics.newImage("images/Rocket.png")
+  
 --------------------------- CreateHero ---------------------------------------------------
 function CreateHero()
     local Hero = {}
@@ -290,7 +295,6 @@ function updateJeu(dt)
     hero.x = hero.x + 2 * 60 * dt
   end
 
-
   -- Animation du héro, on augmente lentement le numéro de la frame courante
   hero.currentImage = hero.currentImage + 12*dt
   -- Si on a dépassé la dernière frame, on repart de 0
@@ -298,6 +302,15 @@ function updateJeu(dt)
     hero.currentImage = 1
   end
 
+------------- UPDATE Music ---------------
+ -- Détermine quelle musique jouer
+ if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
+  musicManager.PlayMusic(1)
+elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
+  musicManager.PlayMusic(2)
+end
+----------------------------------------
+ 
   -- On demande au MusicManager de se mettre à jour
   musicManager.update()
 
@@ -361,6 +374,21 @@ function updateJeu(dt)
     ecran_courant = "End"
   end
   
+  for i, obstacle in pairs(obstacles) do 
+    obstacle.x = obstacle.x-obstacle.v*dt
+    if hero_in_rect(hero, obstacle) then
+      ecran_courant= "Game Over"
+    end
+    if obstacle.x+obstacle.w<0 then
+      table.remove(obstacles, i)
+    end
+  end
+  
+  t = love.timer.getTime()
+  if t - start >2 then
+    objectpop()
+    start = t
+  end
 end
 
 function updateMenu(dt)
@@ -462,13 +490,11 @@ function drawJeu()
     
   else
       
---<<<<<<< HEAD
---    imgBG=imgBGVillejour_fond;  
---=======
+
       musicManager.PlayMusic(3)
       
       imgBG=imgBGVillejour_fond;  
--->>>>>>> fb558deaf3b0a81eb8d96e2d69af031c81a3ddd5
+
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX < 1 then
@@ -537,6 +563,15 @@ function drawJeu()
     --love.graphics.setColor(255,255,255) -- Pour Love inférieur à 11.0
     love.graphics.setColor(1,1,1) -- Pour Love 11.0 et supérieur  
     love.graphics.print(compteur, screenw/4, 10)
+    
+    for i, obstacle in pairs(obstacles) do		
+      love.graphics.push()		
+      love.graphics.translate(obstacle.x, obstacle.y)		
+      love.graphics.scale(1,-1)		
+      love.graphics.scale(obstacle.w/256, obstacle.h/256)		
+      love.graphics.draw(obstacle.img, 0, 0)		
+      love.graphics.pop()		
+    end
 
     -- On restaure les paramètres d'affichage
     love.graphics.pop()
@@ -571,6 +606,14 @@ function drawEnd()
 end
 
 -- function collide
+function objectpop()		
+  rng = love.math.random(0,1)		
+  if(rng<0.5) then		
+    obstacles[#obstacles+1]={x=2*screenw, y=screenh*2, w=50, h=50, v=400, img=tile}		
+  else		
+    obstacles[#obstacles+1]={x=2*screenw, y=screenh*2-85,  w=50, h=50, v=love.math.random(400, 700), img=rocket1}		
+  end		
+end
 
 function collide(personnage, obstacle)
   if (a1 == a2) then return false end
@@ -582,4 +625,21 @@ function collide(personnage, obstacle)
     end
   end
   return false
+end
+
+function point_in_rect(px, py, rect)		
+  if  px>rect.x and px<rect.x+rect.w and py>rect.y-rect.h and py<rect.y  then		
+    return true		
+  else		
+    return false		
+end		
+end		
+		
+function hero_in_rect(hero, rect)		
+  		
+  if point_in_rect(hero.x, hero.y, rect) or point_in_rect(hero.x, hero.y+hero.height, rect) or point_in_rect(hero.x+hero.width, hero.y, rect)  or point_in_rect(hero.x+hero.width, hero.y+hero.height, rect) then		
+    return true		
+  else		
+   return false		
+  end		
 end
