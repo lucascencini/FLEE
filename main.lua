@@ -29,6 +29,7 @@ ecran_courant = "Menu"
 --------------------------- MUSIC POUR ZONES ---------------------------------------------
 
 local musicCool = love.audio.newSource("sons/cool.mp3", "stream")
+local musicTechno = love.audio.newSource("sons/cool.mp3", "stream")
 
 local sndJump = love.audio.newSource("sons/sfx_movement_jump13.wav","static")
 local sndLanding = love.audio.newSource("sons/sfx_movement_jump13_landing.wav","static")
@@ -181,6 +182,7 @@ function love.load()
     -- Crée le MusicManager et lui ajoute 2 musique
   musicManager = CreateMusicManager()
   musicManager.addMusic(musicCool)
+  musicManager.addMusic(musicTechno)
   -- Démarre la 1ère musique
   musicManager.PlayMusic(1)
 
@@ -215,11 +217,11 @@ end
 function love.keypressed(key)
   
   -- Réaction si flèche haut ou espace (+compatibilité Love 0.9)
-  if (key == "up" or key == "space" or key == " ") and hero.jump == false then
+  if (key == "up" or key == "space") and hero.jump == false then
     -- On note qu'il saute
     hero.jump = true
     -- Il part vers le haut comme une fusée !
-    hero.vy = -400
+    hero.velocityVertical = -400
     -- On joue un effet sonore
     sndJump:play()
   end
