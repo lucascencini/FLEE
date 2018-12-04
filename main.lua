@@ -9,6 +9,7 @@ love.graphics.setDefaultFilter("nearest")
 if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 -------------------------- VARIABLE GLOBAL -----------------------------------------------
+local delaybruitage = 5
 
 local SCREEN_WEIGHT = love.graphics.getWidth()/2
 local SCREEN_HEIGHT = love.graphics.getHeight()/2
@@ -29,12 +30,18 @@ ecran_courant = "Menu"
 
 --------------------------- MUSIC POUR ZONES ---------------------------------------------
 
-local musicCool = love.audio.newSource("sons/cool.mp3", "stream")
-local musicTechno = love.audio.newSource("sons/cool.mp3", "stream")
-local musicCity = love.audio.newSource("sons/song_city.mp3","stream")
+local musicCool = love.audio.newSource("sons/song_city.mp3", "stream")
+local musicTechno = love.audio.newSource("sons/song_city.mp3", "stream")
+local musicCity = love.audio.newSource("sons/Knock_Knock.mp3","stream")
 
 local sndJump = love.audio.newSource("sons/sfx_movement_jump13.wav","static")
 local sndLanding = love.audio.newSource("sons/sfx_movement_jump13_landing.wav","static")
+
+local sndVille = {}
+sndVille[1] = love.audio.newSource("sons/camion_klaxon.mp3","static")
+sndVille[2] = love.audio.newSource("sons/voiture_klaxon.mp3","static")
+sndVille[3] = love.audio.newSource("sons/avionsQuiPasse.mp3","static")
+sndVille[4] = love.audio.newSource("sons/metro.mp3","static")
 
 -------------------------- IMAGES ECRANS -------------------------------------------------
 
@@ -247,6 +254,17 @@ end
 
 function updateJeu(dt)
   
+  local sizeSnd=table.getn(sndVille);
+  delaybruitage=delaybruitage - dt
+  if delaybruitage <= 0 then
+    --if (compteur < 1000) then
+    local rand = love.math.random(sizeSnd)
+    rand = math.floor(rand)
+    sndVille[rand]:play()
+    delaybruitage = dt + 5
+    --end
+  end
+  
   compteur = compteur + 1 
    -- Déplacement horizontal du héro
 
@@ -304,11 +322,11 @@ function updateJeu(dt)
 
 ------------- UPDATE Music ---------------
  -- Détermine quelle musique jouer
- if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
-  musicManager.PlayMusic(1)
-elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
-  musicManager.PlayMusic(2)
-end
+ --if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
+  --musicManager.PlayMusic(1)
+--elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
+  --musicManager.PlayMusic(2)
+--end
 ----------------------------------------
  
   -- On demande au MusicManager de se mettre à jour
@@ -419,7 +437,7 @@ function drawJeu()
   -- On double les pixels
   love.graphics.scale(1,1)
 
-  if compteur > 1000 then
+  if compteur < 1000 then
     imgBG = imgBGVilleOcean_0;  
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
