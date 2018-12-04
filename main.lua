@@ -41,6 +41,8 @@ local imgEnd = love.graphics.newImage("images/Ecrans/End.png")
 
 --------------------------- FOND ZONES ---------------------------------------------------
 
+local BGImageSize = love.graphics.newImage("images/Ecrans/Size.png")
+
 -- Premier niveau ville jour
 local imgBGVillejour_fond = love.graphics.newImage("images/Ville_aube/ville_jour_couche_fond.png")
 local imgBGVillejour_l1 = love.graphics.newImage("images/Ville_aube/ville_jour_couche_l1.png")
@@ -190,9 +192,9 @@ function love.update(dt)
   if ecran_courant == "Jeu" then
     updateJeu(dt)
   elseif ecran_courant == "Menu" then
-    updateMenu(dt)
+    updateMenu()
   elseif ecran_courant == "Game Over" then
-    updateGameOver(dt)
+    updateGameOver()
   end
 end
 
@@ -226,7 +228,7 @@ end
 
 -- function update ecran
 
-function updateJeu()
+function updateJeu(dt)
   
   compteur = compteur + 1 
    -- Déplacement horizontal du héro
@@ -299,70 +301,70 @@ function updateJeu()
 
   -- Scrolling infini du fond
   bgX = bgX - (1/10)*dt
-  if bgX <= 0-imgBG2:getWidth() then
+  if bgX <= 0-BGImageSize:getWidth() then
     bgX = 1
   end
 
   bgX_1 = bgX_1 - 15*dt
-  if bgX_1 <= 0-imgBG2:getWidth() then
+  if bgX_1 <= 0-BGImageSize:getWidth() then
     bgX_1 = 1
   end
 
   bgX_2 = bgX_2 - 20*dt
-  if bgX_2 <= 0-imgBG2:getWidth() then
+  if bgX_2 <= 0-BGImageSize:getWidth() then
     bgX_2 = 1
   end
 
   bgX_3 = bgX_3 - 30*dt
-  if bgX_3 <= 0-imgBG2:getWidth() then
+  if bgX_3 <= 0-BGImageSize:getWidth() then
     bgX_3 = 1
   end
 
   bgX_4 = bgX_4 - (85/2)*dt
-  if bgX_4 <= 0-imgBG2:getWidth() then
+  if bgX_4 <= 0-BGImageSize:getWidth() then
     bgX_4 = 1
   end
 
   bgX_5 = bgX_5 - 50*dt
-  if bgX_5 <= 0-imgBG2:getWidth() then
+  if bgX_5 <= 0-BGImageSize:getWidth() then
     bgX_5 = 1
   end
 
   bgX_6 = bgX_6 - 60*dt
-  if bgX_6 <= 0-imgBG2:getWidth() then
+  if bgX_6 <= 0-BGImageSize:getWidth() then
     bgX_6 = 1
   end
 
   bgX_7 = bgX_7 - 70*dt
-  if bgX_7 <= 0 - imgBG2:getWidth() then
+  if bgX_7 <= 0 - BGImageSize:getWidth() then
     bgX_7 = 1
   end
 
   bgX_8 = bgX_8 - 80*dt
-  if bgX_8 <= 0-imgBG2:getWidth() then
+  if bgX_8 <= 0-BGImageSize:getWidth() then
     bgX_8 = 1
   end
 
   bgX_9 = bgX_9 - 90*dt
-  if bgX_9 <= 0-imgBG2:getWidth() then
+  if bgX_9 <= 0-BGImageSize:getWidth() then
     bgX_9 = 1
   end
 
 end
 
-function updateMenu()
+function updateMenu(dt)
   if love.keyboard.isDown('e') then
     ecran_courant = "Jeu"
   end
 end
 
-function updateGameOver()
+function updateGameOver(dt)
   if love.keyboard.isDown("E") then
     ecran_courant = "Jeu"
   end
 end
 
-function updateEnd()
+function updateEnd(dt)
   if love.keyboard.isDown("E") then
     ecran_courant = "Jeu"
   end
@@ -381,68 +383,68 @@ function drawJeu()
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX < 1 then
-        love.graphics.draw(imgBG,bgX + imgBG2:getWidth(),1)
+        love.graphics.draw(imgBG,bgX + BGImageSize:getWidth(),1)
       end
     imgBG=imgBGVilleOcean_1;
     love.graphics.draw(imgBG,bgX_1,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_1 < 1 then
-        love.graphics.draw(imgBG,bgX_1 + imgBG3:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_1 + BGImageSize:getWidth(),1)
       end
     imgBG=imgBGVilleOcean_2;
     love.graphics.draw(imgBG,bgX_2,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_2 < 1 then
-        love.graphics.draw(imgBG,bgX_2 + imgBG4:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_2 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVilleOcean_3;
     love.graphics.draw(imgBG,bgX_3,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_3 < 1 then
-        love.graphics.draw(imgBG,bgX_3 + imgBG5:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_3 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVilleOcean_4;
     love.graphics.draw(imgBG,bgX_4,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_4 < 1 then
-        love.graphics.draw(imgBG,bgX_4 + imgBG6:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_4 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVilleOcean_5;
     love.graphics.draw(imgBG,bgX_5,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_5 < 1 then
-        love.graphics.draw(imgBG,bgX_5 + imgBG7:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_5 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVilleOcean_6;
     love.graphics.draw(imgBG,bgX_6,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_6 < 1 then
-        love.graphics.draw(imgBG,bgX_6 + imgBG8:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_6 + BGImageSize:getWidth(),1)
       end  
       
     imgBG=imgBGVilleOcean_7;
     love.graphics.draw(imgBG,bgX_7,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_7 < 1 then
-        love.graphics.draw(imgBG,bgX_7 + imgBG9:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_7 + BGImageSize:getWidth(),1)
       end 
       
     imgBG=imgBGVilleOcean_8;
     love.graphics.draw(imgBG,bgX_8,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_8 < 1 then
-        love.graphics.draw(imgBG,bgX_8 + imgBG10:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_8 + BGImageSize:getWidth(),1)
       end 
       
     imgBG=imgBGVilleOcean_9;
     love.graphics.draw(imgBG,bgX_9,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_9 < 1 then
-        love.graphics.draw(imgBG,bgX_9 + imgBG11:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_9 + BGImageSize:getWidth(),1)
       end
     
   else
@@ -451,61 +453,61 @@ function drawJeu()
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX < 1 then
-        love.graphics.draw(imgBG,bgX + imgBG2:getWidth(),1)
+        love.graphics.draw(imgBG,bgX + BGImageSize:getWidth(),1)
       end
     imgBG=imgBGVillejour_l1;
     love.graphics.draw(imgBG,bgX_1,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_1 < 1 then
-        love.graphics.draw(imgBG,bgX_1 + imgBG3:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_1 + BGImageSize:getWidth(),1)
       end
     imgBG=imgBGVillejour_l2;
     love.graphics.draw(imgBG,bgX_2,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_2 < 1 then
-        love.graphics.draw(imgBG,bgX_2 + imgBG4:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_2 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVillejour_l3;
     love.graphics.draw(imgBG,bgX_3,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_3 < 1 then
-        love.graphics.draw(imgBG,bgX_3 + imgBG5:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_3 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVillejour_l4;
     love.graphics.draw(imgBG,bgX_4,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_4 < 1 then
-        love.graphics.draw(imgBG,bgX_4 + imgBG6:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_4 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVillejour_l5;
     love.graphics.draw(imgBG,bgX_5,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_5 < 1 then
-        love.graphics.draw(imgBG,bgX_5 + imgBG7:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_5 + BGImageSize:getWidth(),1)
       end
       
     imgBG=imgBGVillejour_l6;
     love.graphics.draw(imgBG,bgX_6,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_6 < 1 then
-        love.graphics.draw(imgBG,bgX_6 + imgBG8:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_6 + BGImageSize:getWidth(),1)
       end  
       
-    imgBG=imgBGVillejour_l7;
+    imgBG=imgBGVillejour_train;
     love.graphics.draw(imgBG,bgX_7,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_7 < 1 then
-        love.graphics.draw(imgBG,bgX_7 + imgBG9:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_7 + BGImageSize:getWidth(),1)
       end 
       
     imgBG=imgBGVillejour_l8;
     love.graphics.draw(imgBG,bgX_8,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX_8 < 1 then
-        love.graphics.draw(imgBG,bgX_8 + imgBG10:getWidth(),1)
+        love.graphics.draw(imgBG,bgX_8 + BGImageSize:getWidth(),1)
       end 
     end
     
