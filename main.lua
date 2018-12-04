@@ -30,6 +30,7 @@ ecran_courant = "Menu"
 
 local musicCool = love.audio.newSource("sons/cool.mp3", "stream")
 local musicTechno = love.audio.newSource("sons/cool.mp3", "stream")
+local musicCity = love.audio.newSource("sons/song_city.mp3","stream")
 
 local sndJump = love.audio.newSource("sons/sfx_movement_jump13.wav","static")
 local sndLanding = love.audio.newSource("sons/sfx_movement_jump13_landing.wav","static")
@@ -137,11 +138,11 @@ function CreateMusicManager()
     for index, music in ipairs(myMM.lstMusics) do
       if index == myMM.currentMusic then
         if music.source:getVolume() < 1 then
-          music.source:setVolume(music.source:getVolume()+0.01)
+          music.source:setVolume(music.source:getVolume()+0.005)
         end
       else
         if music.source:getVolume() > 0 then
-          music.source:setVolume(music.source:getVolume()-0.01)
+          music.source:setVolume(music.source:getVolume()-0.005)
         end
       end
     end
@@ -183,6 +184,7 @@ function love.load()
   musicManager = CreateMusicManager()
   musicManager.addMusic(musicCool)
   musicManager.addMusic(musicTechno)
+  musicManager.addMusic(musicCity)
   -- Démarre la 1ère musique
   musicManager.PlayMusic(1)
 
@@ -290,11 +292,11 @@ function updateJeu(dt)
 
                       ------------- UPDATE Music ---------------
   -- Détermine quelle musique jouer
-  if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
-    musicManager.PlayMusic(1)
-  elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
-    musicManager.PlayMusic(2)
-  end
+  --if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
+  --  musicManager.PlayMusic(1)
+  -- elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
+  --  musicManager.PlayMusic(3)
+  --end
                       ----------------------------------------
 
 
@@ -450,6 +452,8 @@ function drawJeu()
       end
     
   else
+      
+      musicManager.PlayMusic(3)
       
       imgBG=imgBGVillejour_fond;  
     love.graphics.draw(imgBG,bgX,1)
