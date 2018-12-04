@@ -39,6 +39,7 @@ local sndLanding = love.audio.newSource("sons/sfx_movement_jump13_landing.wav","
 local imgMenu = love.graphics.newImage("images/Ecrans/Start.png")
 local imgGameOver = love.graphics.newImage("images/Ecrans/Game_over.png")
 local imgEnd = love.graphics.newImage("images/Ecrans/End.png")
+local imgCredit = love.graphics.newImage("images/Ecrans/Credit.png")
 
 --------------------------- FOND ZONES ---------------------------------------------------
 
@@ -80,6 +81,8 @@ local bgX_8 = 1
 local bgX_9 = 1
 local bgX_10 = 1
 local bgX_Train = 1
+
+local bgY = 1
 
 --------------------------- CreateHero ---------------------------------------------------
 function CreateHero()
@@ -195,9 +198,11 @@ function love.update(dt)
   if ecran_courant == "Jeu" then
     updateJeu(dt)
   elseif ecran_courant == "Menu" then
-    updateMenu()
+    updateMenu(dt)
   elseif ecran_courant == "Game Over" then
-    updateGameOver()
+    updateGameOver(dt)
+  elseif ecran_courant == "End" then
+    updateEnd(dt)
   end
 end
 
@@ -210,6 +215,8 @@ function love.draw()
     drawMenu()
   elseif ecran_courant == "Game Over" then
     drawGameOver()
+  elseif ecran_courant == "End" then
+    drawEnd()
   end
 end
 
@@ -358,6 +365,10 @@ function updateJeu(dt)
     bgX_Train = 0
   end
 
+  if compteur > 2000 then
+    ecran_courant = "End"
+  end
+  
 end
 
 function updateMenu(dt)
@@ -367,15 +378,17 @@ function updateMenu(dt)
 end
 
 function updateGameOver(dt)
-  if love.keyboard.isDown("E") then
+  if love.keyboard.isDown('e') then
     ecran_courant = "Jeu"
   end
 end
 
 function updateEnd(dt)
-  if love.keyboard.isDown("E") then
+  if love.keyboard.isDown('e') then
     ecran_courant = "Jeu"
   end
+  
+  bgY = bgY - 30*dt
 end
 
 -- function draw ecran
@@ -386,7 +399,7 @@ function drawJeu()
   -- On double les pixels
   love.graphics.scale(1,1)
 
-  if compteur < 1000 then
+  if compteur > 1000 then
     imgBG = imgBGVilleOcean_0;  
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
@@ -457,7 +470,7 @@ function drawJeu()
     
   else
       
-      imgBG=imgBGVillejour_fond;  
+    imgBG=imgBGVillejour_fond;  
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX < 1 then
@@ -518,7 +531,6 @@ function drawJeu()
         love.graphics.draw(imgBG,bgX_6 + imgBGVilleOcean_0:getWidth(),1)
       end 
     end
-    
     -- Dessine le hero en prenant la valeur entière de son numéro de frame
     local nImage = math.floor(hero.currentImage)
     love.graphics.draw(hero.listeImagesAnim[nImage], hero.x - hero.width/2, hero.y - hero.height/2)
@@ -556,6 +568,7 @@ function drawEnd()
     -- On double les pixels
     love.graphics.scale(1,1)
     love.graphics.draw(imgEnd)
+    love.graphics.draw(imgCredit,1,bgY)
     love.graphics.pop()
 end
 
