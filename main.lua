@@ -30,6 +30,7 @@ ecran_courant = "Menu"
 
 local musicCool = love.audio.newSource("sons/cool.mp3", "stream")
 local musicTechno = love.audio.newSource("sons/cool.mp3", "stream")
+local musicCity = love.audio.newSource("sons/song_city.mp3","stream")
 
 local sndJump = love.audio.newSource("sons/sfx_movement_jump13.wav","static")
 local sndLanding = love.audio.newSource("sons/sfx_movement_jump13_landing.wav","static")
@@ -141,11 +142,11 @@ function CreateMusicManager()
     for index, music in ipairs(myMM.lstMusics) do
       if index == myMM.currentMusic then
         if music.source:getVolume() < 1 then
-          music.source:setVolume(music.source:getVolume()+0.01)
+          music.source:setVolume(music.source:getVolume()+0.005)
         end
       else
         if music.source:getVolume() > 0 then
-          music.source:setVolume(music.source:getVolume()-0.01)
+          music.source:setVolume(music.source:getVolume()-0.005)
         end
       end
     end
@@ -187,6 +188,7 @@ function love.load()
   musicManager = CreateMusicManager()
   musicManager.addMusic(musicCool)
   musicManager.addMusic(musicTechno)
+  musicManager.addMusic(musicCity)
   -- Démarre la 1ère musique
   musicManager.PlayMusic(1)
 
@@ -295,16 +297,6 @@ function updateJeu(dt)
   if hero.currentImage > #hero.listeImagesAnim then
     hero.currentImage = 1
   end
-
-                      ------------- UPDATE Music ---------------
-  -- Détermine quelle musique jouer
-  if hero.x < screenw/2 and musicManager.currentMusic ~= 1 then
-    musicManager.PlayMusic(1)
-  elseif hero.x >= screenw/2 and musicManager.currentMusic ~= 2 then
-    musicManager.PlayMusic(2)
-  end
-                      ----------------------------------------
-
 
   -- On demande au MusicManager de se mettre à jour
   musicManager.update()
@@ -470,7 +462,13 @@ function drawJeu()
     
   else
       
-    imgBG=imgBGVillejour_fond;  
+--<<<<<<< HEAD
+--    imgBG=imgBGVillejour_fond;  
+--=======
+      musicManager.PlayMusic(3)
+      
+      imgBG=imgBGVillejour_fond;  
+-->>>>>>> fb558deaf3b0a81eb8d96e2d69af031c81a3ddd5
     love.graphics.draw(imgBG,bgX,1)
       -- Si il y a du noir à droite, on dessine un 2ème fond
       if bgX < 1 then
